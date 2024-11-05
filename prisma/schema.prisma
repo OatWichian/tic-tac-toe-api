@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+// generator markdown {
+//   provider = "prisma-markdown"
+//   output   = "./ERD.md"
+//   title    = "MKT Clound One ID"
+// }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id            Int      @id @default(autoincrement())
+  uuid          String   @unique @default(uuid()) @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  status        Int      @default(1) @db.SmallInt
+  firstName     String   @map("first_name")
+  lastName      String   @map("last_name")
+  firebaseId    String   @unique @map("firebase_id")
+  email         String   @map("email")
+  imageUrl      String?  @map("image_url")
+  winContinuous Int      @default(0) @map("win_continuous")
+  totalScore    Int      @default(0) @map("total_score")
+
+  @@map("user_profile")
+}
+
+model GameMaster {
+  id            BigInt   @id @default(autoincrement()) @map("id")
+  uuid          String   @unique @map("uuid") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  status        Int      @default(1) @db.SmallInt
+  name          String?  @map("name")
+  winScore      Int      @default(1) @map("win_score")
+  lostScore     Int      @default(1) @map("lost_score")
+  specialScore  Int      @default(1) @map("special_score")
+  winContinuous Int      @default(1) @map("win_continuous")
+
+  @@map("game_master")
+}
